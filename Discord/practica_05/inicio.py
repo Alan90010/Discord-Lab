@@ -1,7 +1,10 @@
+import datetime
 import discord
 import os
 import re
 from dotenv import load_dotenv
+
+hora_inicio = datetime.datetime.now()
 
 def mostrar_bienvenida():
     """Retorna la lista de comandos disponibles."""
@@ -11,28 +14,42 @@ def mostrar_bienvenida():
         "📜 Esccriba !Exit para salir del Agente:"
     )
 
+def calcular_uptime(hora_inicio):
+
+    """
+    Calcula la diferencia de tiempo entre el inicio y el actual
+    """
+    ahora = datetime.datetime.now()
+    diferencia = ahora - hora_inicio
+    segundos = int(diferencia.total_seconds())
+
+    return f"Tiempo de actividad: {segundos} segundos"
+
 def main(entrada):
-    
+
         PREFIJO = "!"
-        
+
         if not entrada.startswith(PREFIJO):
-            if entrada: print("Recuerda usar '!' para comandos.")
-            
-        # Procesamiento de la entrada
+            if entrada:
+                print("Recuerda usar '!' para comandos.")
+
         cuerpo = entrada[len(PREFIJO):].split(maxsplit=1)
+
         comando = cuerpo[0].lower()
         argumento = cuerpo[1] if len(cuerpo) > 1 else ""
-        
-        # Selección de acción (Estructura de control)
+
         if comando == "exit":
             print("Saliendo del gestor...")
             return "Saliendo del gestor..."
-                        
+
         elif comando == "inicio":
             print(mostrar_bienvenida())
             return mostrar_bienvenida()
-            
-            
+
+        elif comando == "uptime":
+            print(calcular_uptime(hora_inicio))
+            return calcular_uptime(hora_inicio)
+                     
         else:
             print(f" Error: Comando '!{comando}' no reconocido.")
             return f" Error: Comando '!{comando}' no reconocido."
